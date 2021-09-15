@@ -15,15 +15,18 @@ public class App
     }
     static double evalExpression(String exp)
     {
+        // Put each token in the string into a stack for easier parsing
         var split = Arrays.asList(exp.split(" "));
         Collections.reverse(split);
         var newStack = new Stack<String>();
         newStack.addAll(split.stream().filter(n -> n.length() != 0).toList());
+
         return processExpression(newStack);
     }
     static double processExpression(Stack<String> exp)
     {
-        if (exp.peek().matches("^-?\\d+$"))
+        // If the next token is a number, just return it
+        if (exp.peek().matches("^\\-?[1-9]\\d*(\\.\\d+)?$"))
         {
             return Double.parseDouble(exp.pop());
         }
