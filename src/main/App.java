@@ -3,6 +3,10 @@ package main;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Deque;
+import java.util.LinkedList;
+import java.util.PriorityQueue;
+import java.util.Queue;
 import java.util.Scanner;
 import java.util.Stack;
 
@@ -18,43 +22,44 @@ public class App
         // Put each token in the string into a stack for easier parsing
         var split = Arrays.asList(exp.split(" "));
         Collections.reverse(split);
-        var newStack = new Stack<String>();
+        Queue<String> newStack = new LinkedList<String>();
         newStack.addAll(split.stream().filter(n -> n.length() != 0).toList());
 
         return processExpression(newStack);
     }
-    static double processExpression(Stack<String> exp)
+    static double processExpression(Queue<String> exp)
     {
         // If the next token is a number, just return it
         if (exp.peek().matches("^\\-?[1-9]\\d*(\\.\\d+)?$"))
         {
-            return Double.parseDouble(exp.pop());
+            return Double.parseDouble(exp.poll());
         }
         
-        var result = 0.0;
-        var nums = new ArrayList<Double>();
-        var op = exp.pop();
+        var result = 0.0;        
+        Queue<Double> nums = new LinkedList<Double>();
+        var op = exp.poll();
 
         while (!exp.isEmpty())
         {
             nums.add(processExpression(exp));
         }
+        
+        var start = nums.poll();
+
         if (op.equals("+"))
         {
-            result = nums.stream().reduce(0.0, (a, b) -> a + b);
+            result = nums.stream().reduce(start, (a, b) -> a + b);
         }
         else if (op.equals("-"))
         {
-            var start = nums.get(0) * 2;
             result = nums.stream().reduce(start, (a, b) -> a - b);
         }
         else if (op.equals("*"))
         {
-            result = nums.stream().reduce(1.0, (a, b) -> a * b);
+            result = nums.stream().reduce(start, (a, b) -> a * b);
         }
         else if (op.equals("/"))
         {
-            var start = nums.get(0) * nums.get(0);
             result = nums.stream().reduce(start, (a, b) -> a / b);
         }
 
