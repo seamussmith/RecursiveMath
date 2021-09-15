@@ -26,7 +26,6 @@ public class App
             return Double.parseDouble(exp.poll());
         }
         
-        var result = 0.0;
         var op = exp.poll();
         Queue<Double> nums = new LinkedList<Double>();
 
@@ -41,14 +40,14 @@ public class App
 
         // And do the arithmetic
         if (op.equals("+"))
-            result = nums.stream().reduce(start, (a, b) -> a + b);
+            return nums.stream().reduce(start, (a, b) -> a + b);
         else if (op.equals("-"))
-            result = nums.stream().reduce(start, (a, b) -> a - b);
+            return nums.stream().reduce(start, (a, b) -> a - b);
         else if (op.equals("*"))
-            result = nums.stream().reduce(start, (a, b) -> a * b);
+            return nums.stream().reduce(start, (a, b) -> a * b);
         else if (op.equals("/"))
-            result = nums.stream().reduce(start, (a, b) -> a / b);
-
-        return result;
+            return nums.stream().reduce(start, (a, b) -> a / b);
+        
+        return 0;
     }
 }
