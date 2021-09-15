@@ -22,9 +22,7 @@ public class App
     {
         // If the next token is a number, just return it
         if (exp.peek().matches("^\\-?[1-9]\\d*(\\.\\d+)?$"))
-        {
             return Double.parseDouble(exp.poll());
-        }
         
         var op = exp.poll();
         Queue<Double> nums = new LinkedList<Double>();
