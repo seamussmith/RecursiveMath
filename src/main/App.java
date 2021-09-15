@@ -11,9 +11,8 @@ public class App
     }
     static double evalExpression(String exp)
     {
-        // Put each token in the string into a stack for easier parsing
+        // Put each token in the string into a queue for easier parsing
         var split = Arrays.asList(exp.split(" "));
-        Collections.reverse(split);
         Queue<String> newStack = new LinkedList<String>();
         newStack.addAll(split.stream().filter(n -> n.length() != 0).toList());
 
@@ -27,33 +26,28 @@ public class App
             return Double.parseDouble(exp.poll());
         }
         
-        var result = 0.0;        
-        Queue<Double> nums = new LinkedList<Double>();
+        var result = 0.0;
         var op = exp.poll();
+        Queue<Double> nums = new LinkedList<Double>();
 
+        // Get every number until the queue is empty.
+        // If the next token is an operator,
+        // the recursive function will just calculate that expression, and so on.
+        // BECAUSE RECURSION!
         while (!exp.isEmpty())
-        {
             nums.add(processExpression(exp));
-        }
         
         var start = nums.poll();
 
+        // And do the arithmetic
         if (op.equals("+"))
-        {
             result = nums.stream().reduce(start, (a, b) -> a + b);
-        }
         else if (op.equals("-"))
-        {
             result = nums.stream().reduce(start, (a, b) -> a - b);
-        }
         else if (op.equals("*"))
-        {
             result = nums.stream().reduce(start, (a, b) -> a * b);
-        }
         else if (op.equals("/"))
-        {
             result = nums.stream().reduce(start, (a, b) -> a / b);
-        }
 
         return result;
     }
