@@ -16,9 +16,9 @@ public class App
         Queue<String> newStack = new LinkedList<String>();
         newStack.addAll(split.stream().filter(n -> n.length() != 0).toList());
 
-        return processExpression(newStack);
+        return processExpression(newStack, 0);
     }
-    static double processExpression(Queue<String> tokens)
+    static double processExpression(Queue<String> tokens, int n)
     {
         // If the next token is a number, just return it
         if (tokens.peek().matches("^\\-?[1-9]\\d*(\\.\\d+)?$"))
@@ -26,27 +26,18 @@ public class App
         
         // Data needed to calculate expression
         var op = tokens.poll();
-        Queue<Double> nums = new LinkedList<Double>();
-
-        // Get every number until the queue is empty.
-        // If the next token is an operator,
-        // the recursive function will just calculate that expression, and so on.
-        // BECAUSE RECURSION!
-        while (!tokens.isEmpty())
-            nums.add(processExpression(tokens));
-        
-        // Number to start reducing on
-        var start = nums.poll();
+        var num1 = processExpression(tokens, n + 1);
+        var num2 = processExpression(tokens, n + 2);
 
         // And do the arithmetic
         if (op.equals("+"))
-            return nums.stream().reduce(start, (a, b) -> a + b);
+            return num1 + num2;
         else if (op.equals("-"))
-            return nums.stream().reduce(start, (a, b) -> a - b);
+            return num1 - num2;
         else if (op.equals("*"))
-            return nums.stream().reduce(start, (a, b) -> a * b);
+            return num1 * num2;
         else if (op.equals("/"))
-            return nums.stream().reduce(start, (a, b) -> a / b);
+            return num1 / num2;
         
         return 0;
     }
