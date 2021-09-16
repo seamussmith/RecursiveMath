@@ -26,6 +26,7 @@ public class App
         
         // Data needed to calculate expression
         var op = tokens.poll();
+        // NOTE: Will raise a NullPointerException if the tokens queue is empty
         var num1 = processExpression(tokens, n + 1);
         var num2 = processExpression(tokens, n + 2);
 
